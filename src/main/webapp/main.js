@@ -13,6 +13,12 @@ es decir al cargar la ventana se actualiza los elementos de la tabla
 */
 window.onload = () => {
 	actualizarDesplegable();
+	let rgbJSON = localStorage.getItem("color");
+	let rgb = JSON.parse(rgbJSON);
+	color(rgb);
+	let rutaJSON = localStorage.getItem("imagen");
+	let ruta = JSON.parse(rutaJSON);
+	imagenJSON(ruta);
 };
 
 // Normalizar nombre (sin caracteres especiales, minúscula)
@@ -176,4 +182,90 @@ function finalizarCompra() {
 
 	carrito = [];
 	escribir();
+}
+
+function guardarProducto() {
+	let productosJSON = JSON.stringify(productos);
+	if (productosJSON) {
+		localStorage.setItem("productos", productosJSON);
+		alert("Productos guardados en el local storage");
+	} if (productos == productosJSON || productosJSON == null) {
+		alert("No hay productos que guardar");
+	}
+}
+
+function cargarProducto() {
+	let productosJSON = localStorage.getItem("productos");
+	if (productosJSON) {
+		productos = JSON.parse(productosJSON);
+		actualizarDesplegable();
+		alert("Productos cargados con exito")
+	} else {
+		alert("No hay productos que cargar")
+	}
+}
+
+function eliminarProducto() {
+	let productosJSON = localStorage.getItem("productos");
+	if (productosJSON) {
+		localStorage.removeItem("productos");
+		alert("Productos eliminados del local storage con exito");
+	} else {
+		alert("No hay productos que eliminar en el local storage");
+	}
+}
+
+function guardarCarrito() {
+	let carritoJSON = JSON.stringify(carrito);
+	if (carritoJSON) {
+		guardarProducto();
+		localStorage.setItem("carrito", carritoJSON);
+		alert("Carrito guardado con exito");
+	}
+	if (carrito == carritoJSON || carritoJSON == null) {
+		alert("No hay nada que guardar en el carrito")
+	}
+}
+
+function cargarCarrito() {
+	let carritoJSON = localStorage.getItem("carrito");
+	if (carritoJSON) {
+		cargarProducto();
+		carrito = JSON.parse(carritoJSON);
+		alert("Carrito cargado con exito");
+		escribir();
+	}
+	if (carritoJSON == carrito || carritoJSON == null) {
+		alert("No hay carrito que cargar");
+	}
+}
+
+function eliminarCarrito() {
+	let carritoJSON = localStorage.getItem("carrito");
+	if (carritoJSON) {
+		localStorage.removeItem("carrito");
+		alert("Carrito eliminado con exito del local storage")
+	} else {
+		alert("No hay carrito que eliminar");
+	}
+}
+
+function color(rgb) {
+	let rgbJSON = JSON.stringify(rgb);
+	if (rgbJSON) {
+		document.body.style.backgroundColor = rgb;
+		localStorage.setItem("color", rgbJSON);
+	}
+	if (rgb == rgbJSON || rgbJSON == null) {
+		alert("No hay color que guardar");
+	}
+}
+
+function imagenJSON(ruta){
+	let rutaJSON = JSON.stringify(ruta);
+	if(rutaJSON){
+		var link = document.querySelector('link[rel="icon"]');
+		link.href = ruta;
+		localStorage.setItem("imagen",rutaJSON);
+	}
 }
